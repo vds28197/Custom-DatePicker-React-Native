@@ -1,20 +1,32 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import DatePickerModal from './components/DatePickerModal';
+import {NativeBaseProvider} from 'native-base';
 
 const App = () => {
   const [selectedDate, setSelectedDate] = useState('');
+  const [openDatePickerModal, setOpenDatePickerModal] = useState(false);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.selectedDateView}>
-        <View>
-          <Text style={styles.selectedDateTextStyle}>{selectedDate ? selectedDate : 'Select Date'}</Text>
+    <NativeBaseProvider>
+      <View style={styles.container}>
+        <View style={styles.selectedDateView}>
+          <View>
+            <Text style={styles.selectedDateTextStyle}>
+              {selectedDate ? selectedDate : 'Select Date'}
+            </Text>
+          </View>
+          <TouchableOpacity onPress={() => setOpenDatePickerModal(true)}>
+            <FeatherIcon name="chevron-down" size={24} color={'#F5F5F5'} />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity>
-          <FeatherIcon name="chevron-down" size={24} color={'#F5F5F5'} />
-        </TouchableOpacity>
+        <DatePickerModal
+          showModal={openDatePickerModal}
+          onClose={() => setOpenDatePickerModal(!openDatePickerModal)}
+        />
       </View>
-    </View>
+    </NativeBaseProvider>
   );
 };
 
@@ -29,7 +41,7 @@ const styles = StyleSheet.create({
   selectedDateView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: "#191919",
+    backgroundColor: '#191919',
     width: '90%',
     alignSelf: 'center',
     height: 65,
@@ -41,6 +53,6 @@ const styles = StyleSheet.create({
   },
   selectedDateTextStyle: {
     color: '#FFFFFF',
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });
